@@ -1,0 +1,59 @@
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using OnlineShop.Shared.Core.Interfaces.Serialization;
+using OnlineShop.Shared.Core.Serialization;
+using OnlineShop.Shared.Core.Settings;
+using System.Linq;
+
+namespace OnlineShop.Shared.Core.Extensions
+{
+    /// <summary>
+    /// Extends ServiceCollection and adds Serialization
+    /// </summary>
+    public static class ServiceCollectionExtensions
+    {
+        /// <summary>
+        /// Add SystemTextJson or NewtonsoftJson serialization depending on config
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddSerialization(this IServiceCollection services, IConfiguration config)
+        {
+            services.Configure<SerializationSettings>(config.GetSection(nameof(SerializationSettings)));
+            SerializationSettings options = services.GetOptions<SerializationSettings>(nameof(SerializationSettings));
+            services.AddSingleton<IJsonSerializerSettingsOptions, JsonSerializerSettingsOptions>();
+            if (options.UseSystemTextJson)
+            {
+                services
+                    .AddSingleton<IJsonSerializer, SystemTextJsonSerializer>()
+                    .Configure<JsonSerializerSettingsOptions>(configureOptions =>
+                    {
+                        if (!configureOptions.JsonSerializerOptions.Converters.Any(c => c.GetType() == typeof(TimespanJsonConverter)))
+                        {
+                            configureOptions.JsonSerializerOptions.Converters.Add(new TimespanJsonConverter());
+                        }
+                    });
+            }
+            else if (options.UseNewtonsoftJson)
+            {
+                services
+                    .AddSingleton<IJsonSerializer, NewtonSoftJsonSerializer>();
+            }
+
+            return services;
+        }
+
+        public static T GetOptions<T>(this IServiceCollection services, string sectionName)
+            where T : new()
+        {
+            using ServiceProvider serviceProvider = services.BuildServiceProvider();
+            IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            IConfigurationSection section = configuration.GetSection(sectionName);
+            var options = new T();
+            section.Bind(options);
+
+            return options;
+        }
+    }
+}

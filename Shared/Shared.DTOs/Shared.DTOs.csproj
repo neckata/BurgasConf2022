@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>OnlineShop.DTOs</RootNamespace>
+    <AssemblyName>OnlineShop.DTOs</AssemblyName>
+    <CodeAnalysisRuleSet />
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+    <CodeAnalysisRuleSet>..\..\OnlineShop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>OnlineShop.DTOs.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>..\..\OnlineShop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+</Project>
