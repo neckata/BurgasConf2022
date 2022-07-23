@@ -1,16 +1,11 @@
-﻿using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OnlineShop.Shared.Core.Exceptions;
-using OnlineShop.Shared.Core.Extensions;
 using OnlineShop.Shared.Core.IntegrationServices.Module;
 using OnlineShop.Shared.Core.Interfaces;
+using OnlineShop.Shared.Core.Interfaces.Services;
 using OnlineShop.Shared.Core.Interfaces.Services.Module;
 using OnlineShop.Shared.Core.Settings;
-using OnlineShop.Shared.Infrastructure.Interceptors;
-using OnlineShop.Shared.Infrastructure.Middlewares;
 using OnlineShop.Shared.Infrastructure.Persistence;
 using OnlineShop.Shared.Infrastructure.Utilities;
 using System;
@@ -33,7 +28,6 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
         internal static IServiceCollection AddSharedInfrastructure(this IServiceCollection services, IConfiguration config)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddPersistenceSettings(config);
             services
                 .AddDatabaseContext<ApplicationDbContext>()
@@ -44,18 +38,11 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
                 o.AssumeDefaultVersionWhenUnspecified = true;
                 o.DefaultApiVersion = new ApiVersion(1, 0);
             });
-            services.AddControllers()
-                .AddMvcOptions(options =>
-                {
-                    options.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor((value, propertyName) =>
-                        throw new CustomException($"{propertyName}: value '{value}' is invalid.", statusCode: HttpStatusCode.BadRequest));
-                });
-            services.AddTransient<IValidatorInterceptor, ValidatorInterceptor>();
+            services.AddControllers();
             services.AddApplicationLayer(config);
             services.AddRouting(options => options.LowercaseUrls = true);
-            services.AddSingleton<GlobalExceptionHandler>();
-            services.AddApplicationSettings(config);
             services.MapModules();
+            services.AddTransient<IDatabaseSeeder, ModuleDbSeeder>();
 
             return services;
         }
@@ -76,12 +63,6 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
         {
             return services
                 .Configure<PersistenceSettings>(config.GetSection(nameof(PersistenceSettings)));
-        }
-
-        private static IServiceCollection AddApplicationSettings(this IServiceCollection services, IConfiguration configuration)
-        {
-            return services
-                .Configure<ApplicationSettings>(configuration.GetSection(nameof(ApplicationSettings)));
         }
 
         /// <summary>

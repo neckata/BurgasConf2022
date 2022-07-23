@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using OnlineShop.Shared.Core.Entities;
 using OnlineShop.Shared.Core.Interfaces;
 using OnlineShop.Shared.Core.Interfaces.Services;
@@ -30,18 +29,21 @@ namespace OnlineShop.Shared.Infrastructure.Persistence
             Task.Run(async () =>
             {
                 var modules = await _db.Modules.ToListAsync();
-                foreach (string ModuleName in ModuleTypes.Instance.Modules)
+                if (ModuleTypes.Instance.Modules != null)
                 {
-                    Module Module = new Module { Name = ModuleName };
-                    var ModuleInDb = await _db.Modules.FirstOrDefaultAsync(x => x.Name == ModuleName);
-                    if (ModuleInDb == null)
+                    foreach (string ModuleName in ModuleTypes.Instance.Modules)
                     {
-                        Module.IsUsed = true;
-                        await _db.Modules.AddAsync(Module);
-                    }
-                    else
-                    {
-                        modules.Remove(modules.First(x => x.Name == Module.Name));
+                        Module Module = new Module { Name = ModuleName };
+                        var ModuleInDb = await _db.Modules.FirstOrDefaultAsync(x => x.Name == ModuleName);
+                        if (ModuleInDb == null)
+                        {
+                            Module.IsUsed = true;
+                            await _db.Modules.AddAsync(Module);
+                        }
+                        else
+                        {
+                            modules.Remove(modules.First(x => x.Name == Module.Name));
+                        }
                     }
                 }
 

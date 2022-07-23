@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineShop.Shared.Core.Interfaces.Services;
-using OnlineShop.Shared.Infrastructure.Middlewares;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("OnlineShop")]
@@ -12,7 +11,6 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
     {
         public static IApplicationBuilder UseSharedInfrastructure(this IApplicationBuilder app)
         {
-            app.UseMiddleware<GlobalExceptionHandler>();
             app.UseRouting();
 
             app.UseHttpsRedirection();

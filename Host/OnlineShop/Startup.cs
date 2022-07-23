@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OnlineShop.Shared.Core.Extensions;
 using OnlineShop.Shared.Infrastructure.Extensions;
 using System.Reflection;
 
@@ -24,7 +23,6 @@ namespace Host.OnlineShop
         {
             services
                    .AddDistributedMemoryCache()
-                   .AddSerialization(_config)
                    .AddSharedInfrastructure(_config)
                    .AddMediatR(Assembly.GetExecutingAssembly())
                    .AddTransient<IModuleResolver, ModuleResolver.ModuleResolver>();

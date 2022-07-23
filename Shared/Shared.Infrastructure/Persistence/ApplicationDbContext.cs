@@ -10,9 +10,25 @@ namespace OnlineShop.Shared.Infrastructure.Persistence
     {
         protected string Schema => "OnlineShop";
 
+        public ApplicationDbContext(
+      DbContextOptions<ApplicationDbContext> options)
+          : base(options)
+        {
+        }
+
         public DbSet<Module> Modules { get; set; }
 
         public DbSet<Action> Actions { get; set; }
+   
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            if (!string.IsNullOrWhiteSpace(Schema))
+            {
+                modelBuilder.HasDefaultSchema(Schema);
+            }
+
+            base.OnModelCreating(modelBuilder);
+        }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
