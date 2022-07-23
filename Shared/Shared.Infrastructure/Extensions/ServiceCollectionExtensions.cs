@@ -54,7 +54,6 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
             services.AddApplicationLayer(config);
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddSingleton<GlobalExceptionHandler>();
-            services.AddCorsPolicy();
             services.AddApplicationSettings(config);
             services.MapModules();
 
@@ -83,18 +82,6 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
         {
             return services
                 .Configure<ApplicationSettings>(configuration.GetSection(nameof(ApplicationSettings)));
-        }
-
-        private static IServiceCollection AddCorsPolicy(this IServiceCollection services)
-        {
-            var corsSettings = services.GetOptions<CorsSettings>(nameof(CorsSettings));
-            return services.AddCors(opt =>
-            {
-                opt.AddPolicy("CorsPolicy", policy =>
-                {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins(corsSettings.Url);
-                });
-            });
         }
 
         /// <summary>

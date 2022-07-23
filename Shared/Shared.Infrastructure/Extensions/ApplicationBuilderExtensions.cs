@@ -15,10 +15,12 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
             app.UseMiddleware<GlobalExceptionHandler>();
             app.UseRouting();
 
-            app.UseCors("CorsPolicy");
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapRazorPages();
             });
             app.Initialize();
 
