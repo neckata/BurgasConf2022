@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31019.35
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop", "Host/OnlineShop/OnlineShop.csproj", "{82DEFC4E-BC59-46B1-901F-227C78EE36D3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{49BF4A68-F5CE-4FFB-AFB3-84564D5D572E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{54D7DDCA-B16E-4516-924B-1F97BD4B6B1F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{97ACFEC4-7EED-473B-AE22-012123953918}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{82DEFC4E-BC59-46B1-901F-227C78EE36D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82DEFC4E-BC59-46B1-901F-227C78EE36D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82DEFC4E-BC59-46B1-901F-227C78EE36D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82DEFC4E-BC59-46B1-901F-227C78EE36D3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{82DEFC4E-BC59-46B1-901F-227C78EE36D3} = {49BF4A68-F5CE-4FFB-AFB3-84564D5D572E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {885CF884-1738-473C-A0B2-2AA6E89FB534}
+	EndGlobalSection
+EndGlobal
