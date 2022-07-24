@@ -1,25 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using OnlineShop.Shared.Core.Interfaces.Services.Module;
+using OnlineShop.Shared.DTOs.Module;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BurgasConf2022.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly IModuleService _moduleService;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public List<ModuleResponse> Modules = new List<ModuleResponse>();
+
+        public IndexModel(IModuleService moduleService)
         {
-            _logger = logger;
+            _moduleService = moduleService;
         }
 
-        public void OnGet()
+        public async Task OnGet()
         {
-
+            var response = await _moduleService.GetAllModulesAsync();
+            Modules = response.Data;
         }
     }
 }

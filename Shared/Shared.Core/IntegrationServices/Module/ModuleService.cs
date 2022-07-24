@@ -32,7 +32,7 @@ namespace OnlineShop.Shared.Core.IntegrationServices.Module
         /// <returns></returns>
         public async Task<IResult<List<ModuleResponse>>> GetAllModulesAsync()
         {
-            List<ModuleResponse> Modules = await _context.Modules.AsNoTracking().Select(c => new ModuleResponse { Id = c.Id, Name = c.Name }).ToListAsync();
+            List<ModuleResponse> Modules = await _context.Modules.Where(x => x.IsUsed).AsNoTracking().Select(c => new ModuleResponse { Id = c.Id, Name = c.Name }).ToListAsync();
 
             return await Result<List<ModuleResponse>>.SuccessAsync(Modules);
         }

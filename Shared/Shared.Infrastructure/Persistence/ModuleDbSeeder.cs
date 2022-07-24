@@ -3,7 +3,6 @@ using OnlineShop.Shared.Core.Entities;
 using OnlineShop.Shared.Core.Interfaces;
 using OnlineShop.Shared.Core.Interfaces.Services;
 using OnlineShop.Shared.Infrastructure.Utilities;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OnlineShop.Shared.Infrastructure.Persistence
@@ -42,7 +41,14 @@ namespace OnlineShop.Shared.Infrastructure.Persistence
                         }
                         else
                         {
-                            modules.Remove(modules.First(x => x.Name == Module.Name));
+                            if (!ModuleInDb.IsUsed)
+                            {
+                                ModuleInDb.IsUsed = false;
+                                _db.Modules.Update(ModuleInDb);
+                                await _db.SaveChangesAsync();
+                            }
+
+                            modules.Remove(ModuleInDb);
                         }
                     }
                 }
@@ -53,6 +59,8 @@ namespace OnlineShop.Shared.Infrastructure.Persistence
                     _db.Modules.Update(module);
                     await _db.SaveChangesAsync();
                 }
+
+
             }).GetAwaiter().GetResult();
         }
     }

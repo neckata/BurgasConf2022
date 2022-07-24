@@ -18,4 +18,8 @@
     <ProjectReference Include="..\..\Shared\Shared.Infrastructure\Shared.Infrastructure.csproj" />
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="cd &quot;$(SolutionDir)Modules&quot;&#xD;&#xA;for /d %25%25D in (*) do (&#xD;&#xA;&quot;$(DevEnvDir)devenv&quot; &quot;$(SolutionPath)&quot; /Rebuild $(ConfigurationName) /project &quot;$(SolutionDir)Modules\%25%25~nxD\%25%25~nxD.Infrastructure\%25%25~nxD.Infrastructure.csproj&quot;&#xD;&#xA;)" />
+  </Target>
+
 </Project>
