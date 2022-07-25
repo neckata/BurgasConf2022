@@ -7,6 +7,6 @@ namespace OnlineShop.Shared.Core.Interfaces
     {
         public DbSet<Module> Modules { get; set; }
 
-        public DbSet<Action> Actions { get; set; }
+        public DbSet<Item> Items { get; set; }
     }
 }

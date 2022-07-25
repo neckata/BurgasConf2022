@@ -1,9 +1,7 @@
 ﻿namespace OnlineShop.Shared.Infrastructure.Enums
 {
-    public enum ActionsTypeEnum
+    public enum ItemsTypeEnum
     {
-        Create,
-        Update,
         View
     }
 }

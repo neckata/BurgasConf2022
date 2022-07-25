@@ -53,7 +53,7 @@ namespace OnlineShop.Shared.Infrastructure.Persistence
                     }
                 }
 
-                foreach(var module in modules)
+                foreach (var module in modules)
                 {
                     module.IsUsed = false;
                     _db.Modules.Update(module);

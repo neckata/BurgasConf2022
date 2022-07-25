@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace OnlineShop.DTOs.Actions
+namespace OnlineShop.DTOs.Items
 {
     /// <summary>
-    /// UpdateActionRequest
+    /// ActionResponse
     /// </summary>
-    public class UpdateActionRequest
+    public class ItemResponse
     {
         /// <summary>
         /// Action ID

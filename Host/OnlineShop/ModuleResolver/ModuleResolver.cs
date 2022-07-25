@@ -1,5 +1,4 @@
-﻿using OnlineShop.DTOs.Actions;
-using OnlineShop.Shared.Infrastructure.Enums;
+﻿using OnlineShop.Shared.Infrastructure.Enums;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -12,37 +11,23 @@ namespace Host.OnlineShop.ModuleResolver
     public class ModuleResolver : IModuleResolver
     {
         /// <summary>
-        /// Creates a action command for MediatR to be used agaisnt specific Module
+        /// Creates a item command for MediatR to be used agaisnt specific Module
         /// </summary>
         /// <param name="moduleType">Module</param>
         /// <param name="request">Data</param>
-        /// <param name="actionsType">Type of action</param>
+        /// <param name="itemsType">Type of item</param>
         /// <returns>Command object</returns>
-        public object CreateCommand(string moduleType, object request, ActionsTypeEnum actionsType)
+        public object CreateCommand(string moduleType, object request, ItemsTypeEnum itemsType)
         {
             Assembly module = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName.Contains(moduleType));
-            switch (actionsType)
+            switch (itemsType)
             {
-                case ActionsTypeEnum.Create:
+                case ItemsTypeEnum.View:
                     {
-                        Type createActionCommand = module.GetTypes().First(x => x.Name == "CreateActionCommand");
-                        ConstructorInfo createActionCommandConstructor = createActionCommand.GetConstructor(new[] { typeof(CreateActionRequest) });
-                        object createActionCommandConstructorInstance = createActionCommandConstructor.Invoke(new object[] { request });
-                        return createActionCommandConstructorInstance;
-                    }
-                case ActionsTypeEnum.Update:
-                    {
-                        Type updateActionCommand = module.GetTypes().First(x => x.Name == "UpdateActionCommand");
-                        ConstructorInfo updateActionCommandConstructor = updateActionCommand.GetConstructor(new[] { typeof(UpdateActionRequest) });
-                        object updateActionCommandConstructorInstance = updateActionCommandConstructor.Invoke(new object[] { request });
-                        return updateActionCommandConstructorInstance;
-                    }
-                case ActionsTypeEnum.View:
-                    {
-                        Type getActionsCommand = module.GetTypes().First(x => x.Name == "GetActionsCommand");
-                        ConstructorInfo getActionsCommandConstructor = getActionsCommand.GetConstructor(Type.EmptyTypes);
-                        object getActionsCommandConstructorInstance = getActionsCommandConstructor.Invoke(new object[] { });
-                        return getActionsCommandConstructorInstance;
+                        Type getItemsCommand = module.GetTypes().First(x => x.Name == "GetItemsCommand");
+                        ConstructorInfo getItemsCommandConstructor = getItemsCommand.GetConstructor(Type.EmptyTypes);
+                        object getItemsCommandConstructorInstance = getItemsCommandConstructor.Invoke(new object[] { });
+                        return getItemsCommandConstructorInstance;
                     }
             }
 

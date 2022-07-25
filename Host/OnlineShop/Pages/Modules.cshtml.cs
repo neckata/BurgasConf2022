@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using OnlineShop.Shared.Core.Interfaces.Services.Module;
 using OnlineShop.Shared.DTOs.Module;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BurgasConf2022.Pages
@@ -27,7 +26,7 @@ namespace BurgasConf2022.Pages
         public async Task OnGet()
         {
             Microsoft.Extensions.Primitives.StringValues id;
-            Request.Query.TryGetValue("id",out id);
+            Request.Query.TryGetValue("id", out id);
             var response = await _moduleService.GetModuleAsync(Guid.Parse(id[0]));
             Module = response.Data;
         }

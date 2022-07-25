@@ -8,12 +8,12 @@ namespace Host.OnlineShop.ModuleResolver
     public interface IModuleResolver
     {
         /// <summary>
-        /// Creates a action command for MediatR to be used agaisnt specific Module
+        /// Creates a item command for MediatR to be used agaisnt specific Module
         /// </summary>
         /// <param name="moduleType"></param>
         /// <param name="request"></param>
-        /// <param name="actionsType"></param>
+        /// <param name="itemsType"></param>
         /// <returns>Command object</returns>
-        public object CreateCommand(string moduleType, object request, ActionsTypeEnum actionsType);
+        public object CreateCommand(string moduleType, object request, ItemsTypeEnum itemsType);
     }
 }

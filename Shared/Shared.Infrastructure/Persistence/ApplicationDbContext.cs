@@ -18,8 +18,8 @@ namespace OnlineShop.Shared.Infrastructure.Persistence
 
         public DbSet<Module> Modules { get; set; }
 
-        public DbSet<Action> Actions { get; set; }
-   
+        public DbSet<Item> Items { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             if (!string.IsNullOrWhiteSpace(Schema))
