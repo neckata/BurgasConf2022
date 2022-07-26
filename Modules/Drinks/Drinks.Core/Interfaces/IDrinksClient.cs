@@ -1,12 +1,11 @@
-﻿using OnlineShop.Shared.Core.Interfaces.Services.Item;
+﻿using Drinks.Core.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Drinks.Core.Interfaces
 {
-    /// <summary>
-    /// Extends IModuleClient and adds more functionalities if needed
-    /// </summary>
-    public interface IDrinksClient : IItemService
+    public interface IDrinksClient
     {
-
+        Task<List<DrinkModel>> GetItemsAsync();
     }
 }

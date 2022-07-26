@@ -4,7 +4,9 @@ namespace OnlineShop.Shared.Core.Entities
 {
     public class Item : BaseEntity
     {
-        public string ModuleType { get; set; }
+        public string Name { get; set; }
+
+        public decimal Price { get; set; }
 
         public Item()
         {

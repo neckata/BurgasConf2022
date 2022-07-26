@@ -1,9 +1,13 @@
 ﻿using Host.OnlineShop.ModuleResolver;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
+using OnlineShop.Shared.Core.Entities;
 using OnlineShop.Shared.Core.Interfaces.Services.Module;
 using OnlineShop.Shared.DTOs.Module;
+using OnlineShop.Shared.Infrastructure.Enums;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BurgasConf2022.Pages
@@ -15,6 +19,7 @@ namespace BurgasConf2022.Pages
         private readonly IMediator _mediator;
 
         public ModuleResponse Module = null;
+        public List<Item> Items = new List<Item>();
 
         public ModulesModel(IModuleResolver moduleResolver, IModuleService moduleService, IMediator mediator)
         {
@@ -27,8 +32,14 @@ namespace BurgasConf2022.Pages
         {
             Microsoft.Extensions.Primitives.StringValues id;
             Request.Query.TryGetValue("id", out id);
-            var response = await _moduleService.GetModuleAsync(Guid.Parse(id[0]));
-            Module = response.Data;
+            var module = await _moduleService.GetModuleAsync(Guid.Parse(id[0]));
+            Module = module.Data;
+
+            var command = _moduleResolver.CreateCommand(Module.Name, ItemsTypeEnum.View);
+
+            object response = await _mediator.Send(command);
+
+            Items = JsonConvert.DeserializeObject<List<Item>>(JsonConvert.SerializeObject(response));
         }
     }
 }

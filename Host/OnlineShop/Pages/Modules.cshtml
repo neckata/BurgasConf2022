@@ -6,4 +6,9 @@
 
 <div class="text-center">
 	<h1 class="display-4">@Model.Module.Name</h1>
+
+	@foreach (var item in Model.Items)
+	{
+		<strong>@item.Name</strong> <span style="font:italic"> - @item.Price</span> <br>
+	}
 </div>

@@ -14,10 +14,9 @@ namespace Host.OnlineShop.ModuleResolver
         /// Creates a item command for MediatR to be used agaisnt specific Module
         /// </summary>
         /// <param name="moduleType">Module</param>
-        /// <param name="request">Data</param>
         /// <param name="itemsType">Type of item</param>
         /// <returns>Command object</returns>
-        public object CreateCommand(string moduleType, object request, ItemsTypeEnum itemsType)
+        public object CreateCommand(string moduleType, ItemsTypeEnum itemsType)
         {
             Assembly module = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName.Contains(moduleType));
             switch (itemsType)

@@ -1,12 +1,11 @@
-﻿using OnlineShop.Shared.Core.Interfaces.Services.Item;
+﻿using Food.Core.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Food.Core.Interfaces
 {
-    /// <summary>
-    /// Extends IModuleClient and adds more functionalities if needed
-    /// </summary>
-    public interface IFoodClient : IItemService
+    public interface IFoodClient
     {
-
+        Task<List<FoodModel>> GetItemsAsync();
     }
 }

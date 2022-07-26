@@ -1,7 +1,6 @@
 ﻿using Food.Core.Interfaces;
+using Food.Core.Models;
 using MediatR;
-using OnlineShop.Shared.Core.Entities;
-using OnlineShop.Shared.Core.Wrapper;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +10,7 @@ namespace Food.Core.Commands
     /// <summary>
     /// Get items command, created with reflection
     /// </summary>
-    public class GetItemsCommand : IRequest<IResult<List<Item>>>
+    public class GetItemsCommand : IRequest<List<FoodModel>>
     {
 
     }
@@ -19,7 +18,7 @@ namespace Food.Core.Commands
     /// <summary>
     /// Food handler for get items command, called with Reflection
     /// </summary>
-    public class GetItemsCommandHandler : IRequestHandler<GetItemsCommand, IResult<List<Item>>>
+    public class GetItemsCommandHandler : IRequestHandler<GetItemsCommand, List<FoodModel>>
     {
         private readonly IFoodClient _foodClient;
 
@@ -38,7 +37,7 @@ namespace Food.Core.Commands
         /// <param name="command"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<IResult<List<Item>>> Handle(GetItemsCommand command, CancellationToken cancellationToken)
+        public async Task<List<FoodModel>> Handle(GetItemsCommand command, CancellationToken cancellationToken)
         {
             return await _foodClient.GetItemsAsync();
         }
