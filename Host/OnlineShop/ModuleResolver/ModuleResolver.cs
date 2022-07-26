@@ -1,5 +1,4 @@
-﻿using OnlineShop.Shared.Infrastructure.Enums;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 
@@ -14,21 +13,15 @@ namespace Host.OnlineShop.ModuleResolver
         /// Creates a item command for MediatR to be used agaisnt specific Module
         /// </summary>
         /// <param name="moduleType">Module</param>
-        /// <param name="itemsType">Type of item</param>
         /// <returns>Command object</returns>
-        public object CreateCommand(string moduleType, ItemsTypeEnum itemsType)
+        public object CreateCommand(string moduleType)
         {
             Assembly module = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName.Contains(moduleType));
-            switch (itemsType)
-            {
-                case ItemsTypeEnum.View:
-                    {
-                        Type getItemsCommand = module.GetTypes().First(x => x.Name == "GetItemsCommand");
-                        ConstructorInfo getItemsCommandConstructor = getItemsCommand.GetConstructor(Type.EmptyTypes);
-                        object getItemsCommandConstructorInstance = getItemsCommandConstructor.Invoke(new object[] { });
-                        return getItemsCommandConstructorInstance;
-                    }
-            }
+
+            Type getItemsCommand = module.GetTypes().First(x => x.Name == "GetItemsCommand");
+            ConstructorInfo getItemsCommandConstructor = getItemsCommand.GetConstructor(Type.EmptyTypes);
+            object getItemsCommandConstructorInstance = getItemsCommandConstructor.Invoke(new object[] { });
+            return getItemsCommandConstructorInstance;
 
             throw new ArgumentException($"Unknown ModuleType '{moduleType}'");
         }

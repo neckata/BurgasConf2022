@@ -13,6 +13,6 @@ namespace OnlineShop.Shared.Core.Interfaces.Services.Item
         ///  Get created items in Module
         /// </summary>
         /// <returns></returns>
-        Task<IResult<List<Entities.Item>>> GetItemsAsync();
+        Task<IResult<List<OnlineShop.DTOs.Items.Item>>> GetItemsAsync();
     }
 }

@@ -2,10 +2,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
-using OnlineShop.Shared.Core.Entities;
+using OnlineShop.DTOs.Items;
 using OnlineShop.Shared.Core.Interfaces.Services.Module;
 using OnlineShop.Shared.DTOs.Module;
-using OnlineShop.Shared.Infrastructure.Enums;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -35,7 +34,7 @@ namespace BurgasConf2022.Pages
             var module = await _moduleService.GetModuleAsync(Guid.Parse(id[0]));
             Module = module.Data;
 
-            var command = _moduleResolver.CreateCommand(Module.Name, ItemsTypeEnum.View);
+            var command = _moduleResolver.CreateCommand(Module.Name);
 
             object response = await _mediator.Send(command);
 

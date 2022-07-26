@@ -26,7 +26,6 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
     {
         internal static IServiceCollection AddSharedInfrastructure(this IServiceCollection services, IConfiguration config)
         {
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddPersistenceSettings(config);
             services
                 .AddDatabaseContext<ApplicationDbContext>()
