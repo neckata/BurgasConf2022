@@ -43,7 +43,7 @@ namespace OnlineShop.Shared.Infrastructure.Persistence
                         {
                             if (!ModuleInDb.IsUsed)
                             {
-                                ModuleInDb.IsUsed = false;
+                                ModuleInDb.IsUsed = true;
                                 _db.Modules.Update(ModuleInDb);
                                 await _db.SaveChangesAsync();
                             }
