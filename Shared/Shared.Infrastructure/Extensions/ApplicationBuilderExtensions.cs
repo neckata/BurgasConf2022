@@ -10,10 +10,9 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
         public static IApplicationBuilder UseSharedInfrastructure(this IApplicationBuilder app)
         {
             app.UseRouting();
-
-            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors("CorsPolicy");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
