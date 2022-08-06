@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 using OnlineShop.Shared.Core.IntegrationServices.Module;
 using OnlineShop.Shared.Core.Interfaces;
 using OnlineShop.Shared.Core.Interfaces.Services;
@@ -8,14 +10,13 @@ using OnlineShop.Shared.Core.Interfaces.Services.Module;
 using OnlineShop.Shared.Core.Settings;
 using OnlineShop.Shared.Infrastructure.Persistence;
 using OnlineShop.Shared.Infrastructure.Utilities;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("OnlineShop")]
 
 namespace OnlineShop.Shared.Infrastructure.Extensions
 {
@@ -24,8 +25,10 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
     /// </summary>
     public static class ServiceCollectionExtensions
     {
-        internal static IServiceCollection AddSharedInfrastructure(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddSharedInfrastructure(this IServiceCollection services, IConfiguration config)
         {
+            services.MapModules();
+
             services.AddPersistenceSettings(config);
             services
                 .AddDatabaseContext<ApplicationDbContext>()
@@ -39,8 +42,9 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
             services.AddControllers();
             services.AddApplicationLayer(config);
             services.AddRouting(options => options.LowercaseUrls = true);
-            services.MapModules();
+            
             services.AddTransient<IDatabaseSeeder, ModuleDbSeeder>();
+            services.AddSwaggerDocumentation();
 
             return services;
         }
@@ -61,6 +65,93 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
         {
             return services
                 .Configure<PersistenceSettings>(config.GetSection(nameof(PersistenceSettings)));
+        }
+
+        private static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services)
+        {
+            return services.AddSwaggerGen(options =>
+            {
+                string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    if (!assembly.IsDynamic)
+                    {
+                        string xmlFile = $"{assembly.GetName().Name}.xml";
+                        string xmlPath = Path.Combine(baseDirectory, xmlFile);
+                        if (File.Exists(xmlPath))
+                        {
+                            options.IncludeXmlComments(xmlPath);
+                        }
+                    }
+                }
+
+                options.AddSwaggerDocs();
+
+                options.DocInclusionPredicate((version, desc) =>
+                {
+                    if (!desc.TryGetMethodInfo(out var methodInfo))
+                    {
+                        return false;
+                    }
+
+                    IEnumerable<ApiVersion> versions = methodInfo
+                        .DeclaringType?
+                        .GetCustomAttributes(true)
+                        .OfType<ApiVersionAttribute>()
+                        .SelectMany(attr => attr.Versions);
+
+                    List<ApiVersion> maps = methodInfo
+                        .GetCustomAttributes(true)
+                        .OfType<MapToApiVersionAttribute>()
+                        .SelectMany(attr => attr.Versions)
+                        .ToList();
+
+                    return versions?.Any(v => $"v{v}" == version) == true
+                           && (!maps.Any() || maps.Any(v => $"v{v}" == version));
+                });
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    Description = "Input your Bearer token in this format - Bearer {your token here} to access this API",
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer",
+                            },
+                            Scheme = "Bearer",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+                        }, new List<string>()
+                    },
+                });
+                options.MapType<TimeSpan>(() => new OpenApiSchema
+                {
+                    Type = "string",
+                    Nullable = true,
+                    Pattern = @"^([0-9]{1}|(?:0[0-9]|1[0-9]|2[0-3])+):([0-5]?[0-9])(?::([0-5]?[0-9])(?:.(\d{1,9}))?)?$",
+                    Example = new OpenApiString("02:00:00")
+                });
+            });
+        }
+
+        private static void AddSwaggerDocs(this SwaggerGenOptions options)
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Version = "v1",
+                Title = "BurgasConf2022 API"
+            });
         }
 
         /// <summary>
@@ -108,13 +199,14 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
                 {
                     Assembly a = Assembly.LoadFrom(Path.GetFullPath(filename));
                     AppDomain.CurrentDomain.Load(a.GetName());
+
+                    services.AddMvc().AddApplicationPart(a).AddControllersAsServices();
+
                 });
 
                 Assembly module = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName.Contains($"{moduleName}.Infrastructure"));
 
                 Type serviceCollectionExtensions = module.GetTypes().First(x => x.Name == "ServiceCollectionExtensions");
-
-                services = (IServiceCollection)serviceCollectionExtensions.GetMethod($"Add{moduleName}Infrastructure").Invoke(null, new object[] { services });
             }
 
             return services;

@@ -1,27 +1,40 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineShop.Shared.Core.Interfaces.Services;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("OnlineShop")]
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace OnlineShop.Shared.Infrastructure.Extensions
 {
-    internal static class ApplicationBuilderExtensions
+    public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder UseSharedInfrastructure(this IApplicationBuilder app)
         {
             app.UseRouting();
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
+            app.UseCors("CorsPolicy");
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
+            app.UseSwaggerDocumentation();
             app.Initialize();
 
+            return app;
+        }
+
+        private static IApplicationBuilder UseSwaggerDocumentation(this IApplicationBuilder app)
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.DefaultModelsExpandDepth(-1);
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                options.RoutePrefix = "swagger";
+                options.DisplayRequestDuration();
+                options.DocExpansion(DocExpansion.None);
+            });
             return app;
         }
 
