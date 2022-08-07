@@ -1,6 +1,7 @@
 ﻿using Identity.Core.Constants;
 using Identity.Core.Entities;
 using Identity.Core.Helpers;
+using Identity.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,12 @@ namespace Identity.Infrastructure.Persistence
 {
     internal class IdentityDbSeeder : IDatabaseSeeder
     {
-        private readonly IApplicationDbContext _db;
+        private readonly IIdentityDbContext _db;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
 
         public IdentityDbSeeder(
-            IApplicationDbContext db,
+            IIdentityDbContext db,
             RoleManager<Role> roleManager,
             UserManager<User> userManager)
         {

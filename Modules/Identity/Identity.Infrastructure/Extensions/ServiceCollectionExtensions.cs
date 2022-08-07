@@ -7,11 +7,13 @@ using Identity.Infrastructure.Permissions;
 using Identity.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using OnlineShop.Shared.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -81,7 +83,7 @@ namespace OnlineShop.Modules.Identity.Infrastructure.Extensions
                     options.Password.RequireUppercase = false;
                     options.User.RequireUniqueEmail = true;
                 })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders();
             services.AddTransient<IDatabaseSeeder, IdentityDbSeeder>();
             services.AddPermissions();
