@@ -25,7 +25,7 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
     {
         public static IServiceCollection AddSharedInfrastructure(this IServiceCollection services, IConfiguration config)
         {
-            services.MapModules();
+            services.MapModules(config);
 
             services.AddPersistenceSettings(config);
             services
@@ -124,7 +124,7 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        private static IServiceCollection MapModules(this IServiceCollection services)
+        private static IServiceCollection MapModules(this IServiceCollection services, IConfiguration config)
         {
             List<Assembly> loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
             string[] loadedPaths = loadedAssemblies.Where(p => !p.IsDynamic && p.GetName().Name != "OnlineShop").Select(a => a.GetName().Name).OrderBy(x => x).ToArray();
@@ -175,7 +175,7 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
 
                 Type serviceCollectionExtensions = module.GetTypes().First(x => x.Name == "ServiceCollectionExtensions");
 
-                services = (IServiceCollection)serviceCollectionExtensions.GetMethod("AddInfrastructure").Invoke(null, new object[] { services });
+                services = (IServiceCollection)serviceCollectionExtensions.GetMethod("AddInfrastructure").Invoke(null, new object[] { services, config });
             }
 
             return services;

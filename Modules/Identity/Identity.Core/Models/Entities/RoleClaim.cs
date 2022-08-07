@@ -1,0 +1,27 @@
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Identity.Core.Entities
+{
+    public class RoleClaim : IdentityRoleClaim<string>
+    {
+        public string Id { get; set; }
+
+        public string Description { get; set; }
+
+        public string Group { get; set; }
+
+        public virtual Role Role { get; set; }
+
+        public RoleClaim()
+            : base()
+        {
+        }
+
+        public RoleClaim(string roleClaimDescription = null, string roleClaimGroup = null)
+            : base()
+        {
+            Description = roleClaimDescription;
+            Group = roleClaimGroup;
+        }
+    }
+}

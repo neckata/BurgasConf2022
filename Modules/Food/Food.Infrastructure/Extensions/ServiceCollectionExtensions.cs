@@ -1,5 +1,6 @@
 ﻿using Food.Core.Interfaces;
 using Food.Core.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace OnlineShop.Modules.Food.Infrastructure.Extensions
@@ -14,7 +15,7 @@ namespace OnlineShop.Modules.Food.Infrastructure.Extensions
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
         {
             services.AddTransient<IFoodService, FoodService>();
             return services;
