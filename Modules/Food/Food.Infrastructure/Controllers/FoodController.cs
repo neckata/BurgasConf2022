@@ -11,7 +11,7 @@ namespace OnlineShop.Modules.Foods.Infrastructure.Controllers
     [Route("[controller]")]
     public class FoodController : ControllerBase
     {
-        IFoodService _drinksClient;
+        private readonly IFoodService _drinksClient;
 
         public FoodController(IFoodService drinksClient)
         {

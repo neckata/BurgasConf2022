@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Identity.Core.Constants;
+using Identity.Core.Entities;
+using Identity.Models.Roles;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Identity.Core.Constants;
-using Identity.Core.Entities;
-using Identity.Models.Roles;
-using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Core.Helpers
 {

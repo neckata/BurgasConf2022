@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Identity.Core.Constants;
+﻿using Identity.Core.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
+using System;
+using System.Threading.Tasks;
 
 namespace Identity.Infrastructure.Permissions
 {

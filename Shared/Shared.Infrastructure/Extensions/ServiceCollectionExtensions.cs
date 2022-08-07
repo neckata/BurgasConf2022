@@ -40,7 +40,7 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
             services.AddControllers();
             services.AddApplicationLayer(config);
             services.AddRouting(options => options.LowercaseUrls = true);
-            
+
             services.AddTransient<IDatabaseSeeder, ModuleDbSeeder>();
             services.AddSwaggerDocumentation();
 

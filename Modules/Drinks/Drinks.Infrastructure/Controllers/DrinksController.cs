@@ -11,7 +11,7 @@ namespace OnlineShop.Modules.Drinks.Infrastructure.Controllers
     [Route("[controller]")]
     public class DrinksController : ControllerBase
     {
-        IDrinksService _drinksClient;
+        private readonly IDrinksService _drinksClient;
 
         public DrinksController(IDrinksService drinksClient)
         {

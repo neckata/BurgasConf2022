@@ -12,7 +12,7 @@ namespace OnlineShopWebAPI.Controllers
     [Route("[controller]")]
     public class ModulesController : ControllerBase
     {
-        private IModuleService _moduleService;
+        private readonly IModuleService _moduleService;
 
         public ModulesController(IModuleService moduleService)
         {

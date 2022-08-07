@@ -1,20 +1,20 @@
-﻿using System;
+﻿using Identity.Core.Entities;
+using Identity.Core.Exceptions;
+using Identity.Core.Interfaces;
+using Identity.Core.Models.Token;
+using Identity.Core.Settings;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Identity.Core.Entities;
-using Identity.Core.Exceptions;
-using Identity.Core.Interfaces;
-using Identity.Core.Models.Token;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using Identity.Core.Settings;
 
 namespace Identity.Core.Services
 {
@@ -58,7 +58,7 @@ namespace Identity.Core.Services
             await _userManager.UpdateAsync(user);
             string token = await GenerateJwtAsync(user, ipAddress);
             var response = new TokenResponse(token, user.RefreshToken, user.RefreshTokenExpiryTime);
-            return  response;
+            return response;
         }
 
         public async Task<TokenResponse> RefreshTokenAsync(RefreshTokenRequest request, string ipAddress)
