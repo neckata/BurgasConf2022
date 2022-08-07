@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace Drinks.Core.Interfaces
 {
-    public interface IDrinksClient
+    public interface IDrinksService
     {
-        Task<List<DrinkModel>> GetItemsAsync();
+        Task<List<DrinkModel>> GetDrinksAsync();
     }
 }

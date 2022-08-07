@@ -138,7 +138,9 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
                 string moduleName = Path.GetFileName(Path.GetDirectoryName(directoryPath + "\\"));
                 modules.Add(moduleName);
 
-                string[] referencedPaths = Directory.GetFiles($@"{directoryPath}\{moduleName}.Infrastructure\bin\Debug\net5.0", "*.dll");
+                string buildFolder = System.IO.Directory.GetDirectories($@"{directoryPath}\{moduleName}.Infrastructure\bin\Debug\")[0];
+
+                string[] referencedPaths = Directory.GetFiles(buildFolder, "*.dll");
 
                 List<string> toLoad = new List<string>();
 
@@ -173,7 +175,7 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
 
                 Type serviceCollectionExtensions = module.GetTypes().First(x => x.Name == "ServiceCollectionExtensions");
 
-                services = (IServiceCollection)serviceCollectionExtensions.GetMethod($"Add{moduleName}Infrastructure").Invoke(null, new object[] { services });
+                services = (IServiceCollection)serviceCollectionExtensions.GetMethod("AddInfrastructure").Invoke(null, new object[] { services });
             }
 
             return services;

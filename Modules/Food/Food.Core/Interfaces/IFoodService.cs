@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace Food.Core.Interfaces
 {
-    public interface IFoodClient
+    public interface IFoodService
     {
-        Task<List<FoodModel>> GetItemsAsync();
+        Task<List<FoodModel>> GetFoodAsync();
     }
 }

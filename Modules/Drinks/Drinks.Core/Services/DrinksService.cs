@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Drinks.Core.Services
 {
-    public class DrinksClient : IDrinksClient
+    public class DrinksService : IDrinksService
     {
-        public async Task<List<DrinkModel>> GetItemsAsync()
+        public async Task<List<DrinkModel>> GetDrinksAsync()
         {
             List<DrinkModel> items = new List<DrinkModel>
             {

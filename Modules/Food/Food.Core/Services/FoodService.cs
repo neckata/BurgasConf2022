@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Food.Core.Services
 {
-    public class FoodClient : IFoodClient
+    public class FoodService : IFoodService
     {
-        public async Task<List<FoodModel>> GetItemsAsync()
+        public async Task<List<FoodModel>> GetFoodAsync()
         {
             List<FoodModel> items = new List<FoodModel>
             {

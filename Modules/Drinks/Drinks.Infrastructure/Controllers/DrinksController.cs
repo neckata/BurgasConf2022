@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Drinks.Core.Interfaces;
+using Drinks.Core.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OnlineShop.Modules.Drinks.Infrastructure.Controllers
 {
@@ -7,10 +11,17 @@ namespace OnlineShop.Modules.Drinks.Infrastructure.Controllers
     [Route("[controller]")]
     public class DrinksController : ControllerBase
     {
-        [HttpGet]
-        public bool Get()
+        IDrinksService _drinksClient;
+
+        public DrinksController(IDrinksService drinksClient)
         {
-            return true;
+            _drinksClient = drinksClient;
+        }
+
+        [HttpGet]
+        public async Task<List<DrinkModel>> GetDrinks()
+        {
+            return await _drinksClient.GetDrinksAsync();
         }
     }
 }

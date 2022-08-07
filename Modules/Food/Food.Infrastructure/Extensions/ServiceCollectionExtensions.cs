@@ -1,9 +1,6 @@
-﻿using Food.Core.Commands;
-using Food.Core.Interfaces;
+﻿using Food.Core.Interfaces;
 using Food.Core.Services;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace OnlineShop.Modules.Food.Infrastructure.Extensions
 {
@@ -17,10 +14,9 @@ namespace OnlineShop.Modules.Food.Infrastructure.Extensions
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddFoodInfrastructure(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
-            services.AddTransient<IFoodClient, FoodClient>();
-            services.AddMediatR(typeof(GetItemsCommand).GetTypeInfo().Assembly);
+            services.AddTransient<IFoodService, FoodService>();
             return services;
         }
     }
