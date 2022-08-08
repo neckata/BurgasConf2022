@@ -8,7 +8,7 @@
 
         public class PersistenceConnectionStrings
         {
-            public string MSSQL { get; set; }
+            public string MSSQLIdentity { get; set; }
         }
     }
 }

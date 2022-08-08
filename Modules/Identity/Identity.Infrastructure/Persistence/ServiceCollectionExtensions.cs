@@ -10,8 +10,8 @@ namespace Identity.Infrastructure.Persistence
         public static IServiceCollection AddDatabaseContext<T>(this IServiceCollection services)
             where T : DbContext
         {
-          //  PersistenceSettings options = services.GetOptions<PersistenceSettings>(nameof(PersistenceSettings));
-            string connectionString = "Data Source =.; Initial Catalog = OnlineShopIdentity; Integrated Security = true; Max Pool Size = 1000; Min Pool Size = 12; Pooling = True; ";
+            PersistenceSettings options = services.GetOptions<PersistenceSettings>(nameof(PersistenceSettings));
+            string connectionString = options.ConnectionStrings.MSSQLIdentity;
             services.AddMSSQL<T>(connectionString);
 
             return services;
