@@ -28,46 +28,50 @@ namespace OnlineShop.Modules.Identity.Infrastructure.Extensions
     /// </summary>
     public static class ServiceCollectionExtensions
     {
-        private static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSwaggerGen(
-      options =>
-      {
-          options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-          {
-              Name = "Authorization",
-              In = ParameterLocation.Header,
-              Type = SecuritySchemeType.ApiKey,
-              Scheme = "Bearer",
-              BearerFormat = "JWT",
-              Description = "Input your Bearer token in this format - Bearer {your token here} to access this API",
-          });
-          options.AddSecurityRequirement(new OpenApiSecurityRequirement
-          {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer",
-                            },
-                            Scheme = "Bearer",
-                            Name = "Bearer",
-                            In = ParameterLocation.Header,
-                        }, new List<string>()
-                    },
-          });
-          options.MapType<TimeSpan>(() => new OpenApiSchema
-          {
-              Type = "string",
-              Nullable = true,
-              Pattern = @"^([0-9]{1}|(?:0[0-9]|1[0-9]|2[0-3])+):([0-5]?[0-9])(?::([0-5]?[0-9])(?:.(\d{1,9}))?)?$",
-              Example = new OpenApiString("02:00:00")
-          });
-      });
+                            options =>
+                             {
+                                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                                 {
+                                     Name = "Authorization",
+                                     In = ParameterLocation.Header,
+                                     Type = SecuritySchemeType.ApiKey,
+                                     Scheme = "Bearer",
+                                     BearerFormat = "JWT",
+                                     Description = "Input your Bearer token in this format - Bearer {your token here} to access this API",
+                                 });
+                                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                                 {
+                                            {
+                                                new OpenApiSecurityScheme
+                                                {
+                                                    Reference = new OpenApiReference
+                                                    {
+                                                        Type = ReferenceType.SecurityScheme,
+                                                        Id = "Bearer",
+                                                    },
+                                                    Scheme = "Bearer",
+                                                    Name = "Bearer",
+                                                    In = ParameterLocation.Header,
+                                                }, new List<string>()
+                                            },
+                                 });
+                                 options.MapType<TimeSpan>(() => new OpenApiSchema
+                                 {
+                                     Type = "string",
+                                     Nullable = true,
+                                     Pattern = @"^([0-9]{1}|(?:0[0-9]|1[0-9]|2[0-3])+):([0-5]?[0-9])(?::([0-5]?[0-9])(?:.(\d{1,9}))?)?$",
+                                     Example = new OpenApiString("02:00:00")
+                                 });
+                             });
 
             services.AddTransient<ITokenService, TokenService>();
+
+            services
+              .AddDatabaseContext<IdentityDbContext>()
+              .AddScoped<IIdentityDbContext>(provider => provider.GetService<IdentityDbContext>());
 
             services
                 .AddHttpContextAccessor()
@@ -88,6 +92,7 @@ namespace OnlineShop.Modules.Identity.Infrastructure.Extensions
             services.AddTransient<IDatabaseSeeder, IdentityDbSeeder>();
             services.AddPermissions();
             services.AddJwtAuthentication();
+
             return services;
         }
 
