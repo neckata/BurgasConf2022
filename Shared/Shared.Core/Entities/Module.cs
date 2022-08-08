@@ -6,7 +6,9 @@ namespace OnlineShop.Shared.Core.Entities
     {
         public string Name { get; set; }
 
-        public bool IsUsed { get; set; }
+        public bool IsInSolution { get; set; }
+
+        public bool IsActive { get; set; }
 
         public Module()
         {

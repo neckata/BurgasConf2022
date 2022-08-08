@@ -2,6 +2,7 @@
 using OnlineShop.Shared.Core.Interfaces.Services.Module;
 using OnlineShop.Shared.Core.Wrapper;
 using OnlineShop.Shared.DTOs.Module;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -23,6 +24,18 @@ namespace OnlineShopWebAPI.Controllers
         public async Task<IResult<List<ModuleResponse>>> GetModules()
         {
             return await _moduleService.GetAllModulesAsync();
+        }
+
+        [HttpGet("get-module/{moduleId}")]
+        public async Task<IResult<ModuleResponse>> GetModule(Guid moduleId)
+        {
+            return await _moduleService.GetModuleAsync(moduleId);
+        }
+
+        [HttpPut]
+        public async Task<IResult> UpdateModuleStatus(Guid moduleId, bool status)
+        {
+            return await _moduleService.UpdateModuleStatus(moduleId, status);
         }
     }
 }

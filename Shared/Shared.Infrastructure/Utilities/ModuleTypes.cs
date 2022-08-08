@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OnlineShop.Shared.Core.Entities;
+using System.Collections.Generic;
 
 namespace OnlineShop.Shared.Infrastructure.Utilities
 {
@@ -6,7 +7,7 @@ namespace OnlineShop.Shared.Infrastructure.Utilities
     {
         private ModuleTypes() { }
 
-        public List<string> Modules { get; set; }
+        public List<Module> Modules { get; set; }
 
         private static ModuleTypes instance = null;
 

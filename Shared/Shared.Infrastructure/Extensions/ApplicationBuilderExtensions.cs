@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineShop.Shared.Core.Interfaces.Services;
+using OnlineShop.Shared.Infrastructure.Utilities;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -47,12 +49,20 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
             {
                 string moduleName = Path.GetFileName(Path.GetDirectoryName(directoryPath + "\\"));
 
-                Assembly module = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName.Contains($"{moduleName}.Infrastructure"));
+                List<Core.Entities.Module> loadedModules = ModuleTypes.Instance.Modules;
 
-                Type applicationBuilderExtensions = module.GetTypes().FirstOrDefault(x => x.Name == "ApplicationBuilderExtensions");
+                var moduleInDB = loadedModules.FirstOrDefault(x => x.Name == moduleName);
+                if (moduleInDB != null && moduleInDB.IsActive)
+                {
+                    Assembly module = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName.Contains($"{moduleName}.Infrastructure"));
 
-                if (applicationBuilderExtensions != null) { 
-                    app = (IApplicationBuilder)applicationBuilderExtensions.GetMethod("UseInfrastructure").Invoke(null, new object[] { app });}
+                    Type applicationBuilderExtensions = module.GetTypes().FirstOrDefault(x => x.Name == "ApplicationBuilderExtensions");
+
+                    if (applicationBuilderExtensions != null)
+                    {
+                        app = (IApplicationBuilder)applicationBuilderExtensions.GetMethod("UseInfrastructure").Invoke(null, new object[] { app });
+                    }
+                }
             }
 
             return app;

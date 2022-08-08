@@ -3,6 +3,7 @@ using OnlineShop.Shared.Core.Entities;
 using OnlineShop.Shared.Core.Interfaces;
 using OnlineShop.Shared.Core.Interfaces.Services;
 using OnlineShop.Shared.Infrastructure.Utilities;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OnlineShop.Shared.Infrastructure.Persistence
@@ -30,20 +31,22 @@ namespace OnlineShop.Shared.Infrastructure.Persistence
                 var modules = await _db.Modules.ToListAsync();
                 if (ModuleTypes.Instance.Modules != null)
                 {
-                    foreach (string ModuleName in ModuleTypes.Instance.Modules)
+                    foreach (string ModuleName in ModuleTypes.Instance.Modules.Select(x => x.Name))
                     {
                         Module Module = new Module { Name = ModuleName };
                         var ModuleInDb = await _db.Modules.FirstOrDefaultAsync(x => x.Name == ModuleName);
                         if (ModuleInDb == null)
                         {
-                            Module.IsUsed = true;
+                            Module.IsInSolution = true;
+                            Module.IsActive = true;
                             await _db.Modules.AddAsync(Module);
                         }
                         else
                         {
-                            if (!ModuleInDb.IsUsed)
+                            if (!ModuleInDb.IsInSolution)
                             {
-                                ModuleInDb.IsUsed = true;
+                                ModuleInDb.IsInSolution = true;
+                                ModuleInDb.IsActive = true;
                                 _db.Modules.Update(ModuleInDb);
                                 await _db.SaveChangesAsync();
                             }
@@ -55,7 +58,8 @@ namespace OnlineShop.Shared.Infrastructure.Persistence
 
                 foreach (var module in modules)
                 {
-                    module.IsUsed = false;
+                    module.IsInSolution = false;
+                    module.IsActive = false;
                     _db.Modules.Update(module);
                     await _db.SaveChangesAsync();
                 }

@@ -20,8 +20,15 @@ namespace OnlineShop.Shared.Core.Interfaces.Services.Module
         /// <summary>
         /// Gets Module detailed information
         /// </summary>
-        /// <param name="ModuleId"></param>
+        /// <param name="moduleId"></param>
         /// <returns></returns>
-        Task<IResult<ModuleResponse>> GetModuleAsync(Guid ModuleId);
+        Task<IResult<ModuleResponse>> GetModuleAsync(Guid moduleId);
+
+        /// <summary>
+        /// Updates Module status
+        /// </summary>
+        /// <param name="moduleId"></param>
+        /// <returns></returns>
+        Task<IResult> UpdateModuleStatus(Guid moduleId, bool status);
     }
 }

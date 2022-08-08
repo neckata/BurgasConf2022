@@ -32,7 +32,8 @@ namespace OnlineShop.Shared.Core.IntegrationServices.Module
         /// <returns></returns>
         public async Task<IResult<List<ModuleResponse>>> GetAllModulesAsync()
         {
-            List<ModuleResponse> Modules = await _context.Modules.Where(x => x.IsUsed).AsNoTracking().Select(c => new ModuleResponse { Id = c.Id, Name = c.Name }).ToListAsync();
+            List<ModuleResponse> Modules = await _context.Modules.AsNoTracking().Select(c =>
+            new ModuleResponse { Id = c.Id, Name = c.Name, isActive = c.IsActive, IsInSolution = c.IsInSolution }).ToListAsync();
 
             return await Result<List<ModuleResponse>>.SuccessAsync(Modules);
         }
@@ -40,13 +41,29 @@ namespace OnlineShop.Shared.Core.IntegrationServices.Module
         /// <summary>
         /// Gets Module detailed information
         /// </summary>
-        /// <param name="ModuleId"></param>
+        /// <param name="moduleId"></param>
         /// <returns></returns>
-        public async Task<IResult<ModuleResponse>> GetModuleAsync(Guid ModuleId)
+        public async Task<IResult<ModuleResponse>> GetModuleAsync(Guid moduleId)
         {
-            ModuleResponse Module = await _context.Modules.AsNoTracking().Select(c => new ModuleResponse { Id = c.Id, Name = c.Name }).FirstOrDefaultAsync(c => c.Id == ModuleId);
+            ModuleResponse Module = await _context.Modules.AsNoTracking().Select(c =>
+           new ModuleResponse { Id = c.Id, Name = c.Name, isActive = c.IsActive, IsInSolution = c.IsInSolution }).FirstOrDefaultAsync(c => c.Id == moduleId);
 
             return await Result<ModuleResponse>.SuccessAsync(Module);
+        }
+
+        /// <summary>
+        /// Deactivates module
+        /// </summary>
+        /// <param name="ModumoduleIdleId"></param>
+        /// <returns></returns>
+        public async Task<IResult> UpdateModuleStatus(Guid moduleId, bool status)
+        {
+            Entities.Module module = await _context.Modules.AsNoTracking().FirstOrDefaultAsync(c => c.Id == moduleId);
+            module.IsActive = status;
+            _context.Modules.Update(module);
+            await _context.SaveChangesAsync();
+
+            return await Result<ModuleResponse>.SuccessAsync();
         }
     }
 }

@@ -25,8 +25,6 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
     {
         public static IServiceCollection AddSharedInfrastructure(this IServiceCollection services, IConfiguration config)
         {
-            services.MapModules(config);
-
             services.AddPersistenceSettings(config);
             services
                 .AddDatabaseContext<ApplicationDbContext>()
@@ -43,6 +41,8 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
 
             services.AddTransient<IDatabaseSeeder, ModuleDbSeeder>();
             services.AddSwaggerDocumentation();
+
+            services.MapModules(config);
 
             return services;
         }
@@ -69,44 +69,7 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
         {
             return services.AddSwaggerGen(options =>
             {
-                string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-                {
-                    if (!assembly.IsDynamic)
-                    {
-                        string xmlFile = $"{assembly.GetName().Name}.xml";
-                        string xmlPath = Path.Combine(baseDirectory, xmlFile);
-                        if (File.Exists(xmlPath))
-                        {
-                            options.IncludeXmlComments(xmlPath);
-                        }
-                    }
-                }
-
                 options.AddSwaggerDocs();
-
-                options.DocInclusionPredicate((version, desc) =>
-                {
-                    if (!desc.TryGetMethodInfo(out var methodInfo))
-                    {
-                        return false;
-                    }
-
-                    IEnumerable<ApiVersion> versions = methodInfo
-                        .DeclaringType?
-                        .GetCustomAttributes(true)
-                        .OfType<ApiVersionAttribute>()
-                        .SelectMany(attr => attr.Versions);
-
-                    List<ApiVersion> maps = methodInfo
-                        .GetCustomAttributes(true)
-                        .OfType<MapToApiVersionAttribute>()
-                        .SelectMany(attr => attr.Versions)
-                        .ToList();
-
-                    return versions?.Any(v => $"v{v}" == version) == true
-                           && (!maps.Any() || maps.Any(v => $"v{v}" == version));
-                });
             });
         }
 
@@ -131,52 +94,59 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
 
             string[] directoryPaths = Directory.GetDirectories(@"..\..\Modules");
 
+            List<Core.Entities.Module> dbModules = ModuleTypes.Instance.Modules;
+
             List<string> modules = new List<string>();
 
             foreach (var directoryPath in directoryPaths)
             {
                 string moduleName = Path.GetFileName(Path.GetDirectoryName(directoryPath + "\\"));
-                modules.Add(moduleName);
 
-                string buildFolder = System.IO.Directory.GetDirectories($@"{directoryPath}\{moduleName}.Infrastructure\bin\Debug\")[0];
-
-                string[] referencedPaths = Directory.GetFiles(buildFolder, "*.dll");
-
-                List<string> toLoad = new List<string>();
-
-                foreach (string path in referencedPaths)
+                var moduleInDB = dbModules.FirstOrDefault(x => x.Name == moduleName);
+                if (moduleInDB == null || (moduleInDB != null && moduleInDB.IsActive))
                 {
-                    bool add = true;
-                    foreach (var loadedPath in loadedPaths)
+                    modules.Add(moduleName);
+
+                    string buildFolder = System.IO.Directory.GetDirectories($@"{directoryPath}\{moduleName}.Infrastructure\bin\Debug\")[0];
+
+                    string[] referencedPaths = Directory.GetFiles(buildFolder, "*.dll");
+
+                    List<string> toLoad = new List<string>();
+
+                    foreach (string path in referencedPaths)
                     {
-                        if (path.Contains(loadedPath))
+                        bool add = true;
+                        foreach (var loadedPath in loadedPaths)
                         {
-                            add = false;
-                            break;
+                            if (path.Contains(loadedPath))
+                            {
+                                add = false;
+                                break;
+                            }
                         }
+
+                        if (add)
+                            toLoad.Add(path);
                     }
 
-                    if (add)
-                        toLoad.Add(path);
+                    toLoad.ForEach(filename =>
+                    {
+                        Assembly a = Assembly.LoadFrom(Path.GetFullPath(filename));
+                        AppDomain.CurrentDomain.Load(a.GetName());
+
+                        services.AddMvc().AddApplicationPart(a).AddControllersAsServices();
+
+                    });
+
+                    Assembly module = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName.Contains($"{moduleName}.Infrastructure"));
+
+                    Type serviceCollectionExtensions = module.GetTypes().First(x => x.Name == "ServiceCollectionExtensions");
+
+                    services = (IServiceCollection)serviceCollectionExtensions.GetMethod("AddInfrastructure").Invoke(null, new object[] { services, config });
                 }
-
-                ModuleTypes.Instance.Modules = modules;
-
-                toLoad.ForEach(filename =>
-                {
-                    Assembly a = Assembly.LoadFrom(Path.GetFullPath(filename));
-                    AppDomain.CurrentDomain.Load(a.GetName());
-
-                    services.AddMvc().AddApplicationPart(a).AddControllersAsServices();
-
-                });
-
-                Assembly module = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName.Contains($"{moduleName}.Infrastructure"));
-
-                Type serviceCollectionExtensions = module.GetTypes().First(x => x.Name == "ServiceCollectionExtensions");
-
-                services = (IServiceCollection)serviceCollectionExtensions.GetMethod("AddInfrastructure").Invoke(null, new object[] { services, config });
             }
+
+            ModuleTypes.Instance.Modules = modules.Select(x => new Core.Entities.Module { Name = x }).ToList();
 
             return services;
         }

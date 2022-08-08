@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using OnlineShop.Shared.Core.Extensions;
 using OnlineShop.Shared.Core.Settings;
+using OnlineShop.Shared.Infrastructure.Utilities;
+using System.Linq;
 
 namespace OnlineShop.Shared.Infrastructure.Persistence
 {
@@ -24,6 +26,9 @@ namespace OnlineShop.Shared.Infrastructure.Persistence
             using var scope = services.BuildServiceProvider().CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<T>();
             dbContext.Database.Migrate();
+
+            var applicationDbContext = dbContext as ApplicationDbContext;
+            ModuleTypes.Instance.Modules = applicationDbContext.Modules.ToList();
 
             return services;
         }

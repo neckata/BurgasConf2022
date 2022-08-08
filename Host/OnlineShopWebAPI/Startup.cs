@@ -1,11 +1,8 @@
-using Host.OnlineShopWebAPI.ModuleResolver;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineShop.Shared.Infrastructure.Extensions;
-using System.Reflection;
 
 namespace OnlineShopWebAPI
 {
@@ -20,10 +17,7 @@ namespace OnlineShopWebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDistributedMemoryCache()
-              .AddSharedInfrastructure(_config)
-                .AddMediatR(Assembly.GetExecutingAssembly())
-                .AddTransient<IModuleResolver, ModuleResolver>();
+            services.AddSharedInfrastructure(_config);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

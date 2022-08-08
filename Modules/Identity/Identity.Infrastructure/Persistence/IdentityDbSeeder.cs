@@ -66,7 +66,7 @@ namespace Identity.Infrastructure.Persistence
                 {
                     FirstName = "Admin",
                     LastName = "Admin",
-                    Email = "admin@admin.com",
+                    Email = "admin@gmail.com",
                     UserName = "admin",
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,

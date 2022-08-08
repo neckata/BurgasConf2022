@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OnlineShop.Modules.Identity.Infrastructure.Extensions;
 
 namespace Identity.Infrastructure.Persistence
-{ 
+{
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddDatabaseContext<T>(this IServiceCollection services)

@@ -16,5 +16,9 @@ namespace OnlineShop.Shared.DTOs.Module
         /// Module Name
         /// </summary>
         public string Name { get; set; }
+
+        public bool IsInSolution { get; set; }
+
+        public bool isActive { get; set; }
     }
 }
