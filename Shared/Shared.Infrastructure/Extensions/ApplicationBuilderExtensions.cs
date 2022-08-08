@@ -2,6 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using OnlineShop.Shared.Core.Interfaces.Services;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace OnlineShop.Shared.Infrastructure.Extensions
 {
@@ -10,8 +14,6 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
         public static IApplicationBuilder UseSharedInfrastructure(this IApplicationBuilder app)
         {
             app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
             app.UseCors("CorsPolicy");
             app.UseEndpoints(endpoints =>
             {
@@ -19,7 +21,7 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
             });
             app.UseSwaggerDocumentation();
             app.Initialize();
-
+            app.MapModules();
             return app;
         }
 
@@ -34,6 +36,25 @@ namespace OnlineShop.Shared.Infrastructure.Extensions
                 options.DisplayRequestDuration();
                 options.DocExpansion(DocExpansion.None);
             });
+            return app;
+        }
+
+        private static IApplicationBuilder MapModules(this IApplicationBuilder app)
+        {
+            string[] directoryPaths = Directory.GetDirectories(@"..\..\Modules");
+
+            foreach (var directoryPath in directoryPaths)
+            {
+                string moduleName = Path.GetFileName(Path.GetDirectoryName(directoryPath + "\\"));
+
+                Assembly module = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName.Contains($"{moduleName}.Infrastructure"));
+
+                Type applicationBuilderExtensions = module.GetTypes().FirstOrDefault(x => x.Name == "ApplicationBuilderExtensions");
+
+                if (applicationBuilderExtensions != null) { 
+                    app = (IApplicationBuilder)applicationBuilderExtensions.GetMethod("UseInfrastructure").Invoke(null, new object[] { app });}
+            }
+
             return app;
         }
 

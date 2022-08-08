@@ -5,8 +5,6 @@ namespace Identity.Core.Entities
 {
     public class Role : IdentityRole
     {
-        public string Id { get; set; }
-
         public string Description { get; set; }
 
         public virtual ICollection<RoleClaim> RoleClaims { get; set; }
