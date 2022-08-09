@@ -33,9 +33,9 @@ namespace OnlineShopWebAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IResult> UpdateModuleStatus(Guid moduleId, bool status)
+        public async Task<IResult> UpdateModuleStatus(Guid moduleId, bool isActive)
         {
-            return await _moduleService.UpdateModuleStatus(moduleId, status);
+            return await _moduleService.UpdateModuleStatus(moduleId, isActive);
         }
     }
 }
