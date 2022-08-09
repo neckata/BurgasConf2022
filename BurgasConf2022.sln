@@ -35,13 +35,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Core", "Modules\Id
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Infrastructure", "Modules\Identity\Identity.Infrastructure\Identity.Infrastructure.csproj", "{5182F3C1-C23D-4E97-BA5B-0C677F85E189}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.UnitTests", "Shared\Shared.UnitTests\Shared.UnitTests.csproj", "{AC731C35-584F-42DA-85AE-B7FCEEBFC664}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.UnitTests", "Shared\Shared.UnitTests\Shared.UnitTests.csproj", "{AC731C35-584F-42DA-85AE-B7FCEEBFC664}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.UnitTests", "Modules\Identity\Identity.UnitTests\Identity.UnitTests.csproj", "{1BEEA88B-22BF-4DA8-8A5E-8D5017C3F619}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.UnitTests", "Modules\Identity\Identity.UnitTests\Identity.UnitTests.csproj", "{1BEEA88B-22BF-4DA8-8A5E-8D5017C3F619}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Food.UnitTests", "Modules\Food\Food.UnitTests\Food.UnitTests.csproj", "{0CCA4DBA-824C-4DB8-A642-D2C58BA8B169}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Food.UnitTests", "Modules\Food\Food.UnitTests\Food.UnitTests.csproj", "{0CCA4DBA-824C-4DB8-A642-D2C58BA8B169}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drinks.UnitTests", "Modules\Drinks\Drinks.UnitTests\Drinks.UnitTests.csproj", "{34FD8B7A-B057-4E90-AAE5-48C489E709CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drinks.UnitTests", "Modules\Drinks\Drinks.UnitTests\Drinks.UnitTests.csproj", "{34FD8B7A-B057-4E90-AAE5-48C489E709CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Email", "Email", "{F99977F2-FA5B-432C-8487-6C9DB656C571}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Email.Core", "Modules\Email\Email.Core\Email.Core.csproj", "{5A229897-2B65-412A-9395-1FD7C6108932}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Email.Infrastructure", "Modules\Email\Email.Infrastructure\Email.Infrastructure.csproj", "{66781A45-8F34-4CFD-AEB6-7A85438C42E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Email.UnitTests", "Modules\Email\Email.UnitTests\Email.UnitTests.csproj", "{BB745480-BE09-4D8D-A5C9-39E4F86298A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +113,18 @@ Global
 		{34FD8B7A-B057-4E90-AAE5-48C489E709CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34FD8B7A-B057-4E90-AAE5-48C489E709CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34FD8B7A-B057-4E90-AAE5-48C489E709CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A229897-2B65-412A-9395-1FD7C6108932}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A229897-2B65-412A-9395-1FD7C6108932}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A229897-2B65-412A-9395-1FD7C6108932}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A229897-2B65-412A-9395-1FD7C6108932}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66781A45-8F34-4CFD-AEB6-7A85438C42E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66781A45-8F34-4CFD-AEB6-7A85438C42E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66781A45-8F34-4CFD-AEB6-7A85438C42E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66781A45-8F34-4CFD-AEB6-7A85438C42E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB745480-BE09-4D8D-A5C9-39E4F86298A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB745480-BE09-4D8D-A5C9-39E4F86298A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB745480-BE09-4D8D-A5C9-39E4F86298A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB745480-BE09-4D8D-A5C9-39E4F86298A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +147,10 @@ Global
 		{1BEEA88B-22BF-4DA8-8A5E-8D5017C3F619} = {BB638DD5-F3DF-4B14-B9BE-4F1846101C0C}
 		{0CCA4DBA-824C-4DB8-A642-D2C58BA8B169} = {D46319F6-AE8A-499A-AE14-656FC381D6AB}
 		{34FD8B7A-B057-4E90-AAE5-48C489E709CC} = {937F6C74-0030-404F-80D2-277ABE761B48}
+		{F99977F2-FA5B-432C-8487-6C9DB656C571} = {54D7DDCA-B16E-4516-924B-1F97BD4B6B1F}
+		{5A229897-2B65-412A-9395-1FD7C6108932} = {F99977F2-FA5B-432C-8487-6C9DB656C571}
+		{66781A45-8F34-4CFD-AEB6-7A85438C42E3} = {F99977F2-FA5B-432C-8487-6C9DB656C571}
+		{BB745480-BE09-4D8D-A5C9-39E4F86298A3} = {F99977F2-FA5B-432C-8487-6C9DB656C571}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {885CF884-1738-473C-A0B2-2AA6E89FB534}
