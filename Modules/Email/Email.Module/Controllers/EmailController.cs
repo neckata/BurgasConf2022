@@ -3,7 +3,7 @@ using Email.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace OnlineShop.Modules.Email.Infrastructure.Controllers
+namespace OnlineShop.Modules.Email.Module.Controllers
 {
     [ApiVersion("1")]
     [ApiController]
@@ -18,7 +18,7 @@ namespace OnlineShop.Modules.Email.Infrastructure.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> SendEmail(EmailModel email)
+        public async Task<string> SendEmail(EmailModel email)
         {
             return await _emailService.SendEmail(email);
         }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OnlineShop.Modules.Drinks.Infrastructure.Controllers
+namespace OnlineShop.Modules.Drinks.Module.Controllers
 {
     [ApiVersion("1")]
     [ApiController]

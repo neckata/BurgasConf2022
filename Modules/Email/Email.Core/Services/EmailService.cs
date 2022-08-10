@@ -6,9 +6,9 @@ namespace Email.Core.Services
 {
     public class EmailService : IEmailService
     {
-        public async Task<bool> SendEmail(EmailModel email)
+        public async Task<string> SendEmail(EmailModel email)
         {
-            return true;
+            return "Email sent successfully";
         }
     }
 }

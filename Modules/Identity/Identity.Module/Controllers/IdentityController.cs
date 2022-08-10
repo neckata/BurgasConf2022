@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace Identity.Infrastructure.Controllers
+namespace Identity.Module.Controllers
 {
     [ApiVersion("1")]
     public class IdentityController : ControllerBase

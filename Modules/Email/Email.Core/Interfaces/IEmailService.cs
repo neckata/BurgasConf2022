@@ -5,6 +5,6 @@ namespace Email.Core.Interfaces
 {
     public interface IEmailService
     {
-        Task<bool> SendEmail(EmailModel email);
+        Task<string> SendEmail(EmailModel email);
     }
 }
