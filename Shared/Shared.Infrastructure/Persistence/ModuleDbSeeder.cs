@@ -59,7 +59,6 @@ namespace OnlineShop.Shared.Infrastructure.Persistence
                 foreach (var module in modules)
                 {
                     module.IsInSolution = false;
-                    module.IsActive = false;
                     _db.Modules.Update(module);
                     await _db.SaveChangesAsync();
                 }
