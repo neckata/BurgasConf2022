@@ -23,5 +23,11 @@ namespace OnlineShop.Modules.Drinks.Module.Controllers
         {
             return await _drinksClient.GetDrinksAsync();
         }
+
+        [HttpPost("buy-drink")]
+        public string BuyDrink(string drinkName)
+        {
+            return _drinksClient.BuyDrink(drinkName);
+        }
     }
 }

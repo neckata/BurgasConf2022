@@ -1,7 +1,10 @@
-﻿using Email.Core.Interfaces;
+﻿using Email.Core.Commands;
+using Email.Core.Interfaces;
 using Email.Core.Services;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace OnlineShop.Modules.Email.Infrastructure.Extensions
 {
@@ -18,6 +21,7 @@ namespace OnlineShop.Modules.Email.Infrastructure.Extensions
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
         {
             services.AddTransient<IEmailService, EmailService>();
+            services.AddMediatR(typeof(EmailHandler).GetTypeInfo().Assembly);
             return services;
         }
     }

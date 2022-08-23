@@ -1,7 +1,9 @@
 ﻿using Drinks.Core.Interfaces;
 using Drinks.Core.Services;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace OnlineShop.Modules.Drinks.Infrastructure.Extensions
 {
@@ -18,6 +20,8 @@ namespace OnlineShop.Modules.Drinks.Infrastructure.Extensions
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
         {
             services.AddTransient<IDrinksService, DrinksService>();
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+
             return services;
         }
     }
